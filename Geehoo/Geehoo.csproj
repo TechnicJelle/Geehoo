@@ -80,6 +80,7 @@
     <Compile Include="GXPEngine\SoLoud\Soloud.cs" />
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
     <Compile Include="MyGame\Enemy.cs" />
+    <Compile Include="MyGame\Entity.cs" />
     <Compile Include="MyGame\MyGame.cs" />
     <Compile Include="MyGame\Player.cs" />
     <Compile Include="MyGame\Projectile.cs" />

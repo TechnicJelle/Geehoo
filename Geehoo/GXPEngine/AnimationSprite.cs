@@ -268,7 +268,7 @@ namespace GXPEngine
 		/// The number of animation frames per second is [game.targetFps / _animationDelay].
 		/// </summary>
 		public void AnimateFixed() {
-			Animate(game.targetFps * Time.deltaTime / 1000f);
+			Animate(game.targetFps * Time.deltaTime);
 		}
 		
 		//------------------------------------------------------------------------------------------------------------------------

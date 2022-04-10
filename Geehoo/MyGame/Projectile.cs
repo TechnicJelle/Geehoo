@@ -3,77 +3,60 @@
 // You're allowed to learn from this, but please do not simply copy.
 
 using System;
-using GXPEngine;
 using GXPEngine.Core;
 
 namespace Geehoo.MyGame;
 
-public class Projectile : EasyDraw
+public class Projectile : Entity
 {
-	private Vec2 _pos;
-	private Vec2 _vel;
-	private Vec2 _acc;
-
-	private int _radius;
-	private bool _enemyShot;
+	private readonly bool _enemyShot;
 
 	public Projectile(float x, float y, float xVel, float yVel, int radius, bool enemyShot)
 		: this(new Vec2(x, y), new Vec2(xVel, yVel), radius, enemyShot) {}
 
 	public Projectile(Vec2 spawnPos, Vec2 spawnVel, int radius, bool enemyShot)
-		: base(radius * 2, radius * 2, false){
-		_pos = spawnPos;
-		_vel = spawnVel;
-		_acc = new Vec2();
-		_radius = radius;
+		: base(spawnPos.x, spawnPos.y, radius*2, 1) {
 		_enemyShot = enemyShot;
+		ApplyForce(spawnVel);
 
-		SetOrigin(_radius, _radius);
-
-		UpdatePos();
-
-		NoStroke();
 		Fill(64, 64, 255);
-		Ellipse(_radius, _radius, _radius*2, _radius*2);
+		Ellipse(this.radius, this.radius, this.radius*2, this.radius*2);
 	}
 
-	private void Update()
+	public void Update() {
+		Recalc();
+	}
+
+	public override void Recalc()
 	{
-		UpdatePos();
+		base.Recalc();
 
 		MyGame myGame = (MyGame) game;
-		if(_pos.DistSq(myGame.player.pos) < Math.Pow(_radius + myGame.player.coreRadius, 2))
+
+		//Check if projectile has hit the player's core
+		if(Pos.DistSq(myGame.player.GetCorePosition()) < Math.Pow(radius + myGame.player.coreRadius, 2))
 		{
 			myGame.player.TakeDamage();
-			Destroy();
+			TakeDamage();
 		}
 
+		//Check if projectile has hit an enemy
 		for (int i = myGame.enemies.Count - 1; i >= 0; i--)
 		{
+			if(_enemyShot) continue; //Enemy projectiles can't hit enemies themselves
 			Enemy enemy = myGame.enemies[i];
-			if(_enemyShot) continue;
 			//TODO: Better physics calculations for this one!
-			if (_pos.DistSq(enemy.pos) < Math.Pow(_radius + enemy.radius, 2))
+			if (Pos.DistSq(enemy.Pos) < Math.Pow(radius + enemy.radius, 2))
 			{
 				enemy.TakeDamage();
-				Destroy();
+				TakeDamage();
 			}
 		}
 
-		if (y < -_radius || y > game.height + _radius || x < -_radius || x > game.width + _radius)
+		//Check if projectile is out of bounds
+		if (y < -radius || y > game.height + radius || x < -radius || x > game.width + radius)
 		{
-			Destroy();
-			Console.WriteLine($"Projectile destroyed: x: {x}, y: {y}" + Utils.Random(0, 10));
+			TakeDamage();
 		}
-	}
-
-	private void UpdatePos()
-	{
-		_vel += _acc;
-		_pos += _vel * Time.deltaTime;
-		_acc *= 0;
-
-		x = _pos.x;
-		y = _pos.y;
 	}
 }

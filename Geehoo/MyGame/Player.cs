@@ -7,42 +7,31 @@ using GXPEngine.Core;
 
 namespace Geehoo.MyGame;
 
-public class Player : EasyDraw
+public class Player : Entity
 {
-	//TODO: Make a base class for both enemies and player
-	public Vec2 pos => new(x, y);
-	public float radius { get; }
-	public float coreRadius { get; }
-
-	public int health { get; private set; }
-
 	private const int SIZE = 48;
-	private const float CORE_SIZE = 12;
-	private readonly Vec2 _relativeCorePosition;
+	private const float CORE_SIZE = 10;
 
-	private const float SPEED = 0.3f;
+	private const float MOVE_FORCE = 0.1f;
+	private const float DRAG = 0.9f;
+
 	private const int SHOOT_DELAY = 100;
-	private const float PROJECTILE_SPEED = 0.5f;
+	private const float PROJECTILE_SPEED = 3f;
 
 	private int _millisAtLastShot;
 
-	public Player(float x, float y) : base(SIZE, SIZE, false)
+	public float coreRadius { get; }
+	private readonly Vec2 _relativeCorePosition;
+
+	public Player(float x, float y) : base(x, y, SIZE, 3)
 	{
-		radius = SIZE / 2f;
+		DragFactor = DRAG;
 		coreRadius = CORE_SIZE / 2f;
-		health = 3;
-
-		SetOrigin(radius, radius);
-
-		this.x = x;
-		this.y = y;
-
-		NoStroke();
 
 		//body
 		Fill(64);
 		//       MIDDLE TOP ,      BOTTOM RIGHT,  MIDDLE BOTTOM,               LEFT BOTTOM
-		Quad(radius, 0, SIZE, SIZE, radius, SIZE * 0.8f, 0, SIZE);
+		Quad(radius, 0, Size, Size, radius, Size * 0.8f, 0, Size);
 
 		//core
 		Fill(64, 64, 255);
@@ -57,25 +46,25 @@ public class Player : EasyDraw
 		return new Vec2(x + corePosition.x, y + corePosition.y);
 	}
 
-	public void Recalc()
+	public override void Recalc()
 	{
-		Vec2 newPos = new();
-		if (Input.GetKey(Key.LEFT) || Input.GetKey(Key.A)) newPos.x -= 1;
-		if (Input.GetKey(Key.RIGHT) || Input.GetKey(Key.D)) newPos.x += 1;
-		if (Input.GetKey(Key.UP) || Input.GetKey(Key.W)) newPos.y -= 1;
-		if (Input.GetKey(Key.DOWN) || Input.GetKey(Key.S)) newPos.y += 1;
-		newPos.Normalize();
-		newPos *= SPEED * Time.deltaTime;
+		//movement
+		Vec2 input = new();
+		if (Input.GetKey(Key.LEFT) || Input.GetKey(Key.A)) input.x -= 1;
+		if (Input.GetKey(Key.RIGHT) || Input.GetKey(Key.D)) input.x += 1;
+		if (Input.GetKey(Key.UP) || Input.GetKey(Key.W)) input.y -= 1;
+		if (Input.GetKey(Key.DOWN) || Input.GetKey(Key.S)) input.y += 1;
+		input.Normalize();
+		input *= MOVE_FORCE;
+		ApplyForce(input);
 
-		x += newPos.x;
-		y += newPos.y;
-
+		//rotation
 		Vec2 mousePos = new(Input.mouseX, Input.mouseY);
-		Vec2 pos = new(x, y);
-		Vec2 direction = mousePos - pos;
+		Vec2 direction = mousePos - Pos;
 
 		rotation = direction.GetNormal().GetAngle().GetTotalDegrees();
 
+		//shooting
 		if (Input.GetMouseButton(0) && Time.time - _millisAtLastShot > SHOOT_DELAY)
 		{
 			_millisAtLastShot = Time.time;
@@ -87,14 +76,6 @@ public class Player : EasyDraw
 			spawnPos += GetCorePosition();
 			game.AddChild(new Projectile(spawnPos, dir, 5, false));
 		}
-	}
-
-	public void TakeDamage(int damage = 1)
-	{
-		health -= damage;
-		if (health <= 0)
-		{
-			Destroy();
-		}
+		base.Recalc();
 	}
 }

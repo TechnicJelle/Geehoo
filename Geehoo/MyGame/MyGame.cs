@@ -11,7 +11,7 @@ public class MyGame : Game
 
 	private readonly EasyDraw _hud;
 
-	private const bool VSYNC = true;
+	private const bool VSYNC = false;
 
 	private MyGame() : base(500, 1000, false, VSYNC)
 	{
@@ -21,13 +21,17 @@ public class MyGame : Game
 		AddChild(player);
 
 		enemies = new List<Enemy>();
-		for (float f = 0; f < width; f+=width/3f)
+		float f = 0;
+		for (float h = 0; h > -height; h -= height / 5f)
 		{
-			for (float h = 0; h > -height; h -= height / 5f)
+			for (float i = 0; i < width; i += width / 3f)
 			{
 				enemies.Add(new Enemy(h, f));
+				Console.WriteLine(f);
+				f += width / 4f;
 			}
 		}
+
 		foreach (Enemy enemy in enemies)
 		{
 			AddChild(enemy);
@@ -49,10 +53,10 @@ public class MyGame : Game
 		}
 		player.Recalc();
 
-		// Gizmos.DrawLine(0, 0, player.GetCorePosition().x, player.GetCorePosition().y);
+		Gizmos.DrawLine(0, 0, player.GetCorePosition().x, player.GetCorePosition().y);
 
-		Console.WriteLine(currentFps);
-		Console.WriteLine(game.GetDiagnostics());
+		// Console.WriteLine(currentFps);
+		// Console.WriteLine(game.GetDiagnostics());
 
 		_hud.ClearTransparent();
 		_hud.TextAlign(CenterMode.Min, CenterMode.Min);

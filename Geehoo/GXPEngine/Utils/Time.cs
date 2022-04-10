@@ -31,17 +31,17 @@ namespace GXPEngine
 		}
 		
 		/// <summary>
-		/// Returns the time in milliseconds that has passed since the previous frame
+		/// Returns the time in seconds that has passed since the previous frame
 		/// </summary>
 		/// <value>
 		/// The delta time.
 		/// </value>
-		private static int previousFrameTime;
-		public static int deltaTime {
+		public static float deltaTime {
 			get { 
-				return previousFrameTime; 
+				return previousFrameTime / 1000f;
 			}
 		}
+		private static int previousFrameTime;
 
 		internal static void newFrame() {
 			previousFrameTime = time - previousTime;
