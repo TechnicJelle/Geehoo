@@ -241,6 +241,23 @@ public struct Vec2
 	}
 
 	/// <summary>
+	/// Calculates the square distance between this vector and another vector (so there is no slow sqrt() being called)
+	/// </summary>
+	public float DistSq(Vec2 other)
+	{
+		return DistSq(this, other);
+	}
+
+	/// <summary>
+	/// Calculates the square distance between two vectors (so there is no slow sqrt() being called)
+	/// </summary>
+	public static float DistSq(Vec2 v1, Vec2 v2)
+	{
+		Vec2 d = v1 - v2;
+		return d.LengthSq();
+	}
+
+	/// <summary>
 	/// Calculates the dot product between this vector and another vector
 	/// </summary>
 	public float Dot(Vec2 v)
