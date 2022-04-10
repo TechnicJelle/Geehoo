@@ -9,23 +9,29 @@ namespace Geehoo.MyGame;
 
 public class LineSegment
 {
-	public Vec2 start { get; }
-	public Vec2 end { get; }
+	private Vec2 _start;
+	private Vec2 _end;
 
 	public LineSegment(Vec2 start, Vec2 end)
 	{
-		this.start = start;
-		this.end = end;
+		this._start = start;
+		this._end = end;
+	}
+
+	private Vec2 GetDir()
+	{
+		return _end - _start;
+	}
+
+	public void Move(Vec2 delta)
+	{
+		_start += delta;
+		_end += delta;
 	}
 
 	public void Draw()
 	{
-		Gizmos.DrawLine(start.x, start.y, end.x, end.y);
-	}
-
-	public Vec2 GetDir()
-	{
-		return end - start;
+		Gizmos.DrawLine(_start.x, _start.y, _end.x, _end.y);
 	}
 
 	public static (Vec2? intersectionPoint, float? toi) Intersect(LineSegment a, LineSegment b)
@@ -35,13 +41,13 @@ public class LineSegment
 		float d = Vec2.Cross(av, bv);
 		if (d == 0) return (null, null);
 
-		Vec2 dir = a.start - b.start;
+		Vec2 dir = a._start - b._start;
 		float ua = Vec2.Cross(bv, dir) / d;
 		float ub = Vec2.Cross(av, dir) / d;
 
 		if (ua is < 0 or > 1 || ub is < 0 or > 1) return (null, null);
 
-		return (a.start + av * ua, ua);
+		return (a._start + av * ua, ua);
 	}
 
 	public static (Vec2? intersectionPoint, Vec2? reflectionVector) Reflect(LineSegment dynamic, LineSegment @static)

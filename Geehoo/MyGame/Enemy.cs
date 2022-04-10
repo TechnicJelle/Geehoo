@@ -18,13 +18,33 @@ public class Enemy : Entity
 	private int _millisAtLastShot;
 	private readonly float _offset;
 
+	public LineSegment[] hull { get; private set; }
+
 	public Enemy(float y, float offset) : base(offset, y, SIZE, 1)
 	{
 		ApplyForce(new Vec2(0, SPEED));
 		_offset = offset;
 		Fill(128);
-		//       MIDDLE BOTTOM ,    TOP LEFT,  MIDDLE TOP,            RIGHT TOP
-		Quad(SIZE / 2f, SIZE, 0, 0, SIZE/2f, SIZE * 0.2f, SIZE, 0);
+
+		HitBoxRefresh(new Vec2(0, 0), true);
+	}
+
+	private void HitBoxRefresh(Vec2 pos, bool first = false)
+	{
+		Vec2 middleBottom = pos + new Vec2(radius, SIZE);
+		Vec2 leftTop = pos + new Vec2(0, 0);
+		Vec2 middleTop = pos + new Vec2(radius, SIZE * 0.2f);
+		Vec2 rightTop = pos + new Vec2(SIZE, 0);
+
+		LineSegment left = new(leftTop, middleBottom);
+		LineSegment right = new(rightTop, middleBottom);
+		LineSegment leftBack = new(leftTop, middleTop);
+		LineSegment rightBack = new(rightTop, middleTop);
+
+		hull = new []{left, right, leftBack, rightBack};
+
+		if(first)
+			Quad(middleBottom, leftTop, middleTop, rightTop);
 	}
 
 	public override void Recalc()
@@ -44,6 +64,14 @@ public class Enemy : Entity
 		{
 			_millisAtLastShot = Time.time;
 			game.AddChild(new Projectile(x, y, 0, SHOT_SPEED, 4, true));
+		}
+
+		//drawing
+		HitBoxRefresh(Pos - new Vec2(radius));
+
+		foreach (LineSegment lineSegment in hull)
+		{
+			lineSegment.Draw();
 		}
 	}
 

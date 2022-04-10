@@ -134,6 +134,11 @@ namespace GXPEngine {
 			DrawLine(x, y, x + dx, y + dy, space, color, width);
 		}
 
+		public static void DrawArrow(Vec2 start, Vec2 dir)
+		{
+			DrawArrow(start.x, start.y, dir.x, dir.y);
+		}
+
 		/// <summary>
 		/// Draws an arrow from (x,y) to (x+dx, y+dy), using DrawLine.
 		/// The relativeArrowSize is the size of the arrow head compared to the arrow length.

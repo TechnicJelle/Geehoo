@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Drawing.Text;
+using GXPEngine.Core;
 
 namespace GXPEngine 
 {
@@ -442,6 +443,13 @@ namespace GXPEngine
 		/// </summary>
 		public void Triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
 			Polygon(x1,y1,x2,y2,x3,y3);
+		}
+
+		/// <summary>
+		/// Draw a quad (="deformed rectangle") between four points, using the current stroke and fill settings.
+		/// </summary>
+		public void Quad(Vec2 p1, Vec2 p2, Vec2 p3, Vec2 p4) {
+			Quad(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
 		}
 
 		/// <summary>

@@ -11,18 +11,18 @@ public class Entity : EasyDraw
 {
 	protected float DragFactor = 1f;
 
-	public Vec2 Pos;
-	private Vec2 _vel;
+	protected Vec2 Pos;
+	protected Vec2 vel { get; private set; }
 	private Vec2 _acc;
 
 	protected readonly int Size;
-	public float radius { get; }
+	protected float radius { get; }
 	public int health { get; private set; }
 
 	protected Entity(float x, float y, int size, int health) : base(size, size, false)
 	{
 		Pos = new Vec2(x, y);
-		_vel = new Vec2(0, 0);
+		vel = new Vec2(0, 0);
 		_acc = new Vec2(0, 0);
 
 		Size = size;
@@ -48,11 +48,11 @@ public class Entity : EasyDraw
 
 	private void UpdatePos()
 	{
-		_vel += _acc;
+		vel += _acc;
 		// vel *= DragFactor * (1f-Time.deltaTime);
-		_vel *= DragFactor;
+		vel *= DragFactor;
 		// pos += vel * Time.deltaTime;
-		Pos += _vel;
+		Pos += vel;
 		_acc *= 0;
 
 		x = Pos.x;

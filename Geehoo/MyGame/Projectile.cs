@@ -3,6 +3,7 @@
 // You're allowed to learn from this, but please do not simply copy.
 
 using System;
+using System.Linq;
 using GXPEngine.Core;
 
 namespace Geehoo.MyGame;
@@ -45,12 +46,10 @@ public class Projectile : Entity
 		{
 			if(_enemyShot) continue; //Enemy projectiles can't hit enemies themselves
 			Enemy enemy = myGame.enemies[i];
-			//TODO: Better physics calculations for this one!
-			if (Pos.DistSq(enemy.Pos) < Math.Pow(radius + enemy.radius, 2))
-			{
-				enemy.TakeDamage();
-				TakeDamage();
-			}
+			LineSegment trajectory = new(Pos, Pos + vel);
+			if (enemy.hull.All(hullSegment => LineSegment.Intersect(trajectory, hullSegment).intersectionPoint == null)) continue;
+			enemy.TakeDamage();
+			TakeDamage();
 		}
 
 		//Check if projectile is out of bounds
