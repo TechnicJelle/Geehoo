@@ -166,6 +166,21 @@ namespace GXPEngine {
 			DrawLine(xCenter + width / 2, yCenter - height / 2, xCenter + width / 2, yCenter + height / 2, space, color, lineWidth);
 		}
 
+		public static void DrawCircle(float x, float y, float radius, float steps = 10)
+		{
+			//sqrt(radius^2-x^2)
+			float stepSize = 4*radius / steps;
+			float yp = 0; //y prev
+			float rsq = radius * radius;
+			for (float i = -radius+stepSize; i <= radius; i+=stepSize)
+			{
+				float yn = Mathf.Sqrt(rsq - i * i); //y now
+				DrawLine(x+i-stepSize, y + yp, x+i, y + yn);
+				DrawLine(x+i-stepSize, y - yp, x+i, y - yn);
+				yp = yn;
+			}
+		}
+
 		/// <summary>
 		/// This method should typically be called from the RenderSelf method of a GameObject,
 		/// or from the game's OnAfterRender event.

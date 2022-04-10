@@ -135,9 +135,9 @@ public struct Vec2
 	}
 
 	/// <summary>
-	/// Returns a new vector pointing in the given direction in radians
+	/// Returns a new vector pointing in the given direction
 	/// </summary>
-	public static Vec2 GetUnitVector(Angle angle)
+	public static Vec2 FromAngle(Angle angle)
 	{
 		return new Vec2((float) Math.Cos(angle.GetTotalRadians()), (float) Math.Sin(angle.GetTotalRadians()));
 	}
@@ -147,7 +147,7 @@ public struct Vec2
 	/// </summary>
 	public static Vec2 RandomUnitVector()
 	{
-		return GetUnitVector(Angle.FromRadians(Utils.Random(0, Angle.TWO_PI)));
+		return FromAngle(Angle.FromRadians(Utils.Random(0, Angle.TWO_PI)));
 	}
 
 	/// <summary>
@@ -176,18 +176,6 @@ public struct Vec2
 	/// <returns>The modified vector</returns>
 	public Vec2 Rotate(Angle angle)
 	{
-		switch (angle.GetRadians())
-		{
-			case 0:
-				return this;
-			case Angle.HALF_PI:
-				return this = GetNormal();
-			case Angle.TWO_PI-Angle.HALF_PI:
-				return this = -GetNormal();
-			case Angle.PI:
-				return this = -this;
-		}
-
 		float temp = x;
 		x = (float) (x * Math.Cos(angle.GetRadians()) - y * Math.Sin(angle.GetRadians()));
 		y = (float) (temp * Math.Sin(angle.GetRadians()) + y * Math.Cos(angle.GetRadians()));
@@ -274,15 +262,19 @@ public struct Vec2
 	}
 
 	/// <summary>
-	/// Calculates the difference between two angles
+	/// Calculates the cross product between this vector and another vector
 	/// </summary>
-	/// <param name="angle1">in degrees</param>
-	/// <param name="angle2">in degrees</param>
-	/// <returns>The difference in degrees</returns>
-	public static float AngleDifference(float angle1, float angle2)
+	public float Cross(Vec2 other)
 	{
-		float diff = (angle2 - angle1 + 180) % 360 - 180;
-		return diff < -180 ? diff + 360 : diff;
+		return Cross(this, other);
+	}
+
+	/// <summary>
+	/// Calculates the cross product between two vectors
+	/// </summary>
+	public static float Cross(Vec2 v1, Vec2 v2)
+	{
+		return v1.x * v2.y - v1.y * v2.x;
 	}
 
 	public static Vec2 operator +(Vec2 left, Vec2 right)

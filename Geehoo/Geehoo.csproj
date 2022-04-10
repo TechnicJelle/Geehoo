@@ -34,6 +34,7 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -81,6 +82,7 @@
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
     <Compile Include="MyGame\Enemy.cs" />
     <Compile Include="MyGame\Entity.cs" />
+    <Compile Include="MyGame\LineSegment.cs" />
     <Compile Include="MyGame\MyGame.cs" />
     <Compile Include="MyGame\Player.cs" />
     <Compile Include="MyGame\Projectile.cs" />

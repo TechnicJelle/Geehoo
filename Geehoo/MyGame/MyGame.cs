@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GXPEngine;
+using GXPEngine.Core;
 
 namespace Geehoo.MyGame;
 
@@ -53,7 +54,7 @@ public class MyGame : Game
 		}
 		player.Recalc();
 
-		Gizmos.DrawLine(0, 0, player.GetCorePosition().x, player.GetCorePosition().y);
+		// Gizmos.DrawLine(0, 0, player.GetCorePosition().x, player.GetCorePosition().y);
 
 		// Console.WriteLine(currentFps);
 		// Console.WriteLine(game.GetDiagnostics());
@@ -61,6 +62,23 @@ public class MyGame : Game
 		_hud.ClearTransparent();
 		_hud.TextAlign(CenterMode.Min, CenterMode.Min);
 		_hud.Text("Health: " + player.health, 0, 0);
+
+
+		//line segment tests
+		Gizmos.SetColor(255, 255, 255);
+		LineSegment line = new(new Vec2(0, 0), enemies[1].Pos);
+		line.Draw();
+		LineSegment mouse = new(player.Pos, new Vec2(Input.mouseX, Input.mouseY));
+		mouse.Draw();
+
+		(dynamic intersectionPoint, dynamic reflectionVector) = LineSegment.Reflect(mouse, line);
+		if (intersectionPoint != null)
+		{
+			Gizmos.SetColor(255, 0, 0);
+			Gizmos.DrawCircle(intersectionPoint.x, intersectionPoint.y, 5);
+			Vec2 endPoint = intersectionPoint + reflectionVector;
+			Gizmos.DrawCircle(endPoint.x, endPoint.y, 5);
+		}
 	}
 
 	private static void Main()
