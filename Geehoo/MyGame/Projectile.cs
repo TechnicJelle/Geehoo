@@ -50,6 +50,7 @@ public class Projectile : Entity
 			if (enemy.GetType() == typeof(EnemyBoss))
 			{
 				EnemyBoss boss = (EnemyBoss) enemy;
+				bool hit = false;
 				foreach (LineSegment hullSegment in boss.hull)
 				{
 					(dynamic intersectionPoint, dynamic reflectionVector) = LineSegment.Reflect(trajectory, hullSegment);
@@ -58,8 +59,11 @@ public class Projectile : Entity
 					float speed = Vel.Length();
 					Pos = intersectionPoint + reflectionVector;
 					Vel = reflectionVector.SetLength(speed);
+					hit = true;
 					break;
 				}
+
+				if (!hit) continue;
 			}
 			else
 			{
