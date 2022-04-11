@@ -78,6 +78,6 @@ public class Enemy : Entity
 	{
 		MyGame myGame = (MyGame) game;
 		myGame.enemies.Remove(this);
-		Destroy();
+		LateDestroy();
 	}
 }

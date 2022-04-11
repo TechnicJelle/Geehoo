@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GXPEngine;
+using GXPEngine.Core;
 
 namespace Geehoo.MyGame;
 
@@ -49,6 +50,8 @@ public class MyGame : Game
 	// For every game object, Update is called every frame, by the engine:
 	private void Update()
 	{
+		Vec2 windForce = new(0, Mathf.Map(player.GetCorePosition().y, 0, height*0.7f, 0.11f, 0));
+		player.ApplyForce(windForce);
 		foreach (Enemy enemy in enemies)
 		{
 			enemy.Recalc();
