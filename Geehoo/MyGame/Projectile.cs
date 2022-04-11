@@ -46,10 +46,28 @@ public class Projectile : Entity
 		{
 			if(_enemyShot) continue; //Enemy projectiles can't hit enemies themselves
 			Enemy enemy = myGame.enemies[i];
-			LineSegment trajectory = new(Pos, Pos + vel);
-			if (enemy.hull.All(hullSegment => LineSegment.Intersect(trajectory, hullSegment).intersectionPoint == null)) continue;
+			LineSegment trajectory = new(Pos, Pos + Vel);
+			if (enemy.GetType() == typeof(EnemyBoss))
+			{
+				EnemyBoss boss = (EnemyBoss) enemy;
+				foreach (LineSegment hullSegment in boss.hull)
+				{
+					(dynamic intersectionPoint, dynamic reflectionVector) = LineSegment.Reflect(trajectory, hullSegment);
+					if (intersectionPoint == null) continue;
+					//intersection has happened
+					float speed = Vel.Length();
+					Pos = intersectionPoint + reflectionVector;
+					Vel = reflectionVector.SetLength(speed);
+					break;
+				}
+			}
+			else
+			{
+				if (enemy.hull.All(hullSegment => LineSegment.Intersect(trajectory, hullSegment).intersectionPoint == null)) continue;
+				TakeDamage();
+			}
+
 			enemy.TakeDamage();
-			TakeDamage();
 		}
 
 		//Check if projectile is out of bounds

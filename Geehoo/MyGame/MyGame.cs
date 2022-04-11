@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GXPEngine;
-using GXPEngine.Core;
 
 namespace Geehoo.MyGame;
 
@@ -32,6 +31,8 @@ public class MyGame : Game
 				f += width / 4f;
 			}
 		}
+
+		enemies.Add(new EnemyBoss(-height, 500));
 
 		foreach (Enemy enemy in enemies)
 		{
