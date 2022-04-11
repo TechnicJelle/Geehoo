@@ -3,11 +3,12 @@
 // You're allowed to learn from this, but please do not simply copy.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
-// ReSharper disable MemberCanBePrivate.Global
 
 namespace GXPEngine.Core;
 
+[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 public readonly struct Angle
 {
 	/// <summary>
@@ -15,11 +16,14 @@ public readonly struct Angle
 	/// </summary>
 	private const float TOLERANCE = 0.0000001f;
 
-	public const float PI = (float) Math.PI;
-	public const float HALF_PI = (float) (Math.PI / 2.0);
-	public const float THIRD_PI = (float) (Math.PI / 3.0);
-	public const float QUARTER_PI = (float) (Math.PI / 4.0);
-	public const float TWO_PI = (float) (2.0 * Math.PI);
+	// ReSharper disable InconsistentNaming
+	public static readonly Angle ZERO = new(0);
+	public static readonly Angle PI = new(Mathf.PI);
+	public static readonly Angle HALF_PI = new(Mathf.HALF_PI);
+	public static readonly Angle THIRD_PI = new(Mathf.THIRD_PI);
+	public static readonly Angle QUARTER_PI = new(Mathf.QUARTER_PI);
+	public static readonly Angle TWO_PI = new(Mathf.TWO_PI);
+	// ReSharper restore InconsistentNaming
 
 	private readonly float _totalRadians;
 
@@ -36,6 +40,11 @@ public readonly struct Angle
 	public static Angle FromDegrees(float degrees)
 	{
 		return new Angle(Deg2Rad(degrees));
+	}
+
+	public static Angle Random()
+	{
+		return new Angle(Utils.Random(0, TWO_PI));
 	}
 
 	/// <returns>An angle in radians between 0 and TWO_PI</returns>
@@ -74,8 +83,8 @@ public readonly struct Angle
 		return Rad2Deg(GetTotalRadians());
 	}
 
-	private const float RAD_TO_DEG = 180.0f / PI;
-	private const float DEG_TO_RAD = PI / 180.0f;
+	private const float RAD_TO_DEG = 180.0f / Mathf.PI;
+	private const float DEG_TO_RAD = Mathf.PI / 180.0f;
 
 	/// <summary>
 	/// Converts the given radians to degrees
@@ -94,7 +103,8 @@ public readonly struct Angle
 	}
 
 	/// <summary>
-	/// Calculates the difference between two angles
+	/// Calculates the smallest difference between two angles<br/>
+	/// (So it's always between -PI and PI)
 	/// </summary>
 	public static Angle Difference(Angle angle1, Angle angle2)
 	{
@@ -108,6 +118,9 @@ public readonly struct Angle
 		return new Angle(left.GetTotalRadians() + right.GetTotalRadians());
 	}
 
+	/// <summary>
+	/// Inverts the angle (rotates by 180 degrees)
+	/// </summary>
 	public static Angle operator -(Angle angle)
 	{
 		return new Angle(-angle.GetTotalRadians());
@@ -115,7 +128,7 @@ public readonly struct Angle
 
 	public static Angle operator -(Angle left, Angle right)
 	{
-		return new Angle(left.GetTotalRadians() + right.GetTotalRadians());
+		return new Angle(left.GetTotalRadians() - right.GetTotalRadians());
 	}
 
 	public static Angle operator *(Angle angle, float f)
@@ -128,50 +141,72 @@ public readonly struct Angle
 		return new Angle(f * angle.GetTotalRadians());
 	}
 
-	public static Angle operator *(Angle left, Angle right)
-	{
-		return new Angle(left.GetTotalRadians() * right.GetTotalRadians());
-	}
+	//Doesn't really make sense.
+	// public static Angle operator *(Angle left, Angle right)
+	// {
+	// 	return new Angle(left.GetTotalRadians() * right.GetTotalRadians());
+	// }
 
 	public static Angle operator /(Angle angle, float f)
 	{
 		return new Angle(angle.GetTotalRadians() / f);
 	}
 
-	public static Angle operator /(float f, Angle angle)
-	{
-		return new Angle(f / angle.GetTotalRadians());
-	}
+	//Doesn't really make sense.
+	// public static Angle operator /(float f, Angle angle)
+	// {
+	// 	return new Angle(f / angle.GetTotalRadians());
+	// }
 
-	public static Angle operator /(Angle left, Angle right)
-	{
-		return new Angle(left.GetTotalRadians() / right.GetTotalRadians());
-	}
+	//Doesn't really make sense.
+	// public static Angle operator /(Angle left, Angle right)
+	// {
+	// 	return new Angle(left.GetTotalRadians() / right.GetTotalRadians());
+	// }
 
 	public static bool operator ==(Angle left, Angle right)
 	{
-		return Math.Abs(left.GetTotalRadians() - right.GetTotalRadians()) < TOLERANCE;
+		return Math.Abs(left.GetRadians() - right.GetRadians()) < TOLERANCE;
 	}
 
 	public static bool operator !=(Angle left, Angle right)
 	{
-		return Math.Abs(left.GetTotalRadians() - right.GetTotalRadians()) > TOLERANCE;
+		return Math.Abs(left.GetRadians() - right.GetRadians()) > TOLERANCE;
 	}
+
+	public static bool operator <(Angle left, Angle right)
+	{
+		return left.GetRadians() < right.GetRadians();
+	}
+
+	public static bool operator >(Angle left, Angle right)
+	{
+		return left.GetRadians() > right.GetRadians();
+	}
+
+	public static bool operator <=(Angle left, Angle right)
+	{
+		return left.GetRadians() <= right.GetRadians();
+	}
+
+	public static bool operator >= (Angle left, Angle right)
+	{
+		return left.GetRadians() >= right.GetRadians();
+	}
+
+	public override string ToString() => $"{GetRadians()} rad";
+
+	public static implicit operator float(Angle a) => a.GetTotalRadians();
 
 	public override bool Equals(object obj)
 	{
 		if (obj is not Angle angle)
 			return false;
-		return Math.Abs(GetTotalRadians() - angle.GetTotalRadians()) < TOLERANCE;
+		return Math.Abs(GetRadians() - angle.GetRadians()) < TOLERANCE;
 	}
 
 	public override int GetHashCode()
 	{
-		return GetTotalRadians().GetHashCode();
-	}
-
-	public override string ToString()
-	{
-		return $"{GetTotalRadians()} radians";
+		return GetRadians().GetHashCode();
 	}
 }

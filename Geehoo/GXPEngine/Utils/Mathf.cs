@@ -7,10 +7,11 @@ namespace GXPEngine
 	/// </summary>
 	public static class Mathf
 	{
-		/// <summary>
-		/// Constant PI
-		/// </summary>
-		public const float PI = (float)Math.PI;
+		public const float PI = (float) Math.PI;
+		public const float HALF_PI = (float) (Math.PI / 2.0);
+		public const float THIRD_PI = (float) (Math.PI / 3.0);
+		public const float QUARTER_PI = (float) (Math.PI / 4.0);
+		public const float TWO_PI = (float) (2.0 * Math.PI);
 
 		/// <summary>
 		/// Returns the absolute value of specified number

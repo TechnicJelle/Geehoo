@@ -1,7 +1,9 @@
 .vs
 .idea
 Geehoo/obj
+Tests/obj
 *.exe
 *.pdb
 Geehoo/bin/Release
+Tests/bin
 Geehoo.sln.DotSettings.user

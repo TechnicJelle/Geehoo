@@ -4,6 +4,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # SharpDevelop 4.3
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geehoo", "Geehoo\Geehoo.csproj", "{B5126D4C-7FE0-4552-BC8C-E68D529C22B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{77C7B281-0D12-4B7D-90FF-7431026FBB11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -14,6 +16,10 @@ Global
 		{B5126D4C-7FE0-4552-BC8C-E68D529C22B2}.Debug|x86.Build.0 = Debug|x86
 		{B5126D4C-7FE0-4552-BC8C-E68D529C22B2}.Release|x86.ActiveCfg = Release|x86
 		{B5126D4C-7FE0-4552-BC8C-E68D529C22B2}.Release|x86.Build.0 = Release|x86
+		{77C7B281-0D12-4B7D-90FF-7431026FBB11}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{77C7B281-0D12-4B7D-90FF-7431026FBB11}.Debug|x86.Build.0 = Debug|Any CPU
+		{77C7B281-0D12-4B7D-90FF-7431026FBB11}.Release|x86.ActiveCfg = Release|Any CPU
+		{77C7B281-0D12-4B7D-90FF-7431026FBB11}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Geehoo\Geehoo.csproj

@@ -1,6 +1,6 @@
 // Author: TechnicJelle
 // Copyright (c) TechnicJelle. All rights reserved.
-// Except for the functions in this file that are either inspired by, or taken from Processing: https://github.com/processing/processing4/blob/master/core/src/processing/core/PVector.java
+//  Except for the functions in this file that are either inspired by, or taken from Processing: https://github.com/processing/processing4/blob/master/core/src/processing/core/PVector.java
 // You're allowed to learn from this, but please do not simply copy.
 
 using System;
@@ -8,14 +8,12 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace GXPEngine.Core;
 
-[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-// [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
 public struct Vec2
 {
-	// ReSharper disable once InconsistentNaming
+	// ReSharper disable InconsistentNaming
 	public float x;
-	// ReSharper disable once InconsistentNaming
 	public float y;
+	// ReSharper restore InconsistentNaming
 
 	/// <summary>
 	/// When comparing values, the values can be off by this much in either direction before it gets flagged as actually two different numbers
@@ -60,6 +58,22 @@ public struct Vec2
 	/// </summary>
 	public Vec2(int i) : this(i, i)
 	{
+	}
+
+	/// <summary>
+	/// Returns a new vector pointing in the given direction
+	/// </summary>
+	public static Vec2 FromAngle(Angle angle)
+	{
+		return new Vec2(Math.Cos(angle),  Math.Sin(angle));
+	}
+
+	/// <summary>
+	/// Returns a new unit vector pointing in a random direction
+	/// </summary>
+	public static Vec2 Random()
+	{
+		return FromAngle(Angle.Random());
 	}
 
 	/// <summary>
@@ -135,30 +149,14 @@ public struct Vec2
 	}
 
 	/// <summary>
-	/// Returns a new vector pointing in the given direction
-	/// </summary>
-	public static Vec2 FromAngle(Angle angle)
-	{
-		return new Vec2((float) Math.Cos(angle.GetTotalRadians()), (float) Math.Sin(angle.GetTotalRadians()));
-	}
-
-	/// <summary>
-	/// Returns a new unit vector pointing in a random direction
-	/// </summary>
-	public static Vec2 RandomUnitVector()
-	{
-		return FromAngle(Angle.FromRadians(Utils.Random(0, Angle.TWO_PI)));
-	}
-
-	/// <summary>
 	/// Set vector angle to the given direction in radians (length doesn't change)
 	/// </summary>
 	/// <returns>The modified vector</returns>
 	public Vec2 SetAngle(Angle angle)
 	{
 		float m = Length();
-		x = (float) (m * Math.Cos(angle.GetRadians()));
-		y = (float) (m * Math.Sin(angle.GetRadians()));
+		x = (float) (m * Math.Cos(angle));
+		y = (float) (m * Math.Sin(angle));
 		return this;
 	}
 
@@ -177,8 +175,8 @@ public struct Vec2
 	public Vec2 Rotate(Angle angle)
 	{
 		float temp = x;
-		x = (float) (x * Math.Cos(angle.GetRadians()) - y * Math.Sin(angle.GetRadians()));
-		y = (float) (temp * Math.Sin(angle.GetRadians()) + y * Math.Cos(angle.GetRadians()));
+		x = (float) (x * Math.Cos(angle) - y * Math.Sin(angle));
+		y = (float) (temp * Math.Sin(angle) + y * Math.Cos(angle));
 		return this;
 	}
 
