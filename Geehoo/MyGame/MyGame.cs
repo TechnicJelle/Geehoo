@@ -52,10 +52,12 @@ public class MyGame : Game
 	{
 		Vec2 windForce = new(0, Mathf.Map(player.GetCorePosition().y, 0, height*0.7f, 0.11f, 0));
 		player.ApplyForce(windForce);
-		foreach (Enemy enemy in enemies)
+		for (int i = enemies.Count - 1; i >= 0; i--)
 		{
+			Enemy enemy = enemies[i];
 			enemy.Recalc();
 		}
+
 		player.Recalc();
 
 		// Gizmos.DrawLine(0, 0, player.GetCorePosition().x, player.GetCorePosition().y);

@@ -10,6 +10,8 @@ namespace GXPEngine.Core;
 
 public struct Vec2
 {
+	//TODO: Polish up XML documentation
+
 	// ReSharper disable InconsistentNaming
 	public float x;
 	public float y;

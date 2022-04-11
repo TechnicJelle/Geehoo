@@ -11,6 +11,7 @@ namespace GXPEngine.Core;
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 public readonly struct Angle
 {
+	//TODO: Polish up XML documentation
 	/// <summary>
 	/// When comparing values, the values can be off by this much in either direction before it gets flagged as actually two different numbers
 	/// </summary>
@@ -47,7 +48,7 @@ public readonly struct Angle
 		return new Angle(Utils.Random(0, TWO_PI));
 	}
 
-	/// <returns>An angle in radians between 0 and TWO_PI</returns>
+	/// <returns>An angle in radians between 0 and <see cref="Mathf.TWO_PI"/></returns>
 	public float GetRadians()
 	{
 		return Mathf.Wrap(GetTotalRadians(), TWO_PI);
@@ -59,7 +60,8 @@ public readonly struct Angle
 		return Mathf.Wrap(GetTotalRadians() + PI, TWO_PI) - PI;
 	}
 
-	/// <returns>The actual angle in radians. Can be less than 0 and more than TWO_PI!</returns>
+	/// <returns>The actual angle in radians.<br/>
+	/// <b>Can be less than 0 and more than <see cref="Mathf.TWO_PI"/>!</b></returns>
 	public float GetTotalRadians()
 	{
 		return _totalRadians;
@@ -77,7 +79,8 @@ public readonly struct Angle
 		return Rad2Deg(GetRadiansWithNegative());
 	}
 
-	/// <returns>The actual angle in degrees. Can be less than 0 and more than TWO_PI!</returns>
+	/// <returns>The actual angle in degrees.<br/>
+	/// <b>Can be less than 0 and more than 360!</b></returns>
 	public float GetTotalDegrees()
 	{
 		return Rad2Deg(GetTotalRadians());
