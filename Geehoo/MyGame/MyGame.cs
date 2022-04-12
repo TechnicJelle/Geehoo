@@ -27,13 +27,13 @@ public class MyGame : Game
 		{
 			for (float i = 0; i < width; i += width / 3f)
 			{
-				enemies.Add(new Enemy(h, f));
+				enemies.Add(new EnemyZigzag(h, f));
 				Console.WriteLine(f);
 				f += width / 4f;
 			}
 		}
 
-		enemies.Add(new EnemyBoss(-height, 500));
+		enemies.Add(new EnemyBoss(-height, 250));
 
 		foreach (Enemy enemy in enemies)
 		{

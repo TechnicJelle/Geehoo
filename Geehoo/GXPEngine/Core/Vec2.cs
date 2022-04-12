@@ -176,10 +176,19 @@ public struct Vec2
 	/// <returns>The modified vector</returns>
 	public Vec2 Rotate(Angle angle)
 	{
-		float temp = x;
-		x = (float) (x * Math.Cos(angle) - y * Math.Sin(angle));
-		y = (float) (temp * Math.Sin(angle) + y * Math.Cos(angle));
-		return this;
+		return this = Rotate(this, angle);
+	}
+
+	/// <summary>
+	/// Rotate the vector over the given angle in radians
+	/// </summary>
+	/// <returns>The modified vector</returns>
+	public static Vec2 Rotate(Vec2 vec, Angle angle)
+	{
+		float temp = vec.x;
+		vec.x = (float) (vec.x * Math.Cos(angle) - vec.y * Math.Sin(angle));
+		vec.y = (float) (temp * Math.Sin(angle) + vec.y * Math.Cos(angle));
+		return vec;
 	}
 
 	/// <summary>

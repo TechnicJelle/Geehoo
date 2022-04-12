@@ -82,6 +82,7 @@
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
     <Compile Include="MyGame\EnemyBoss.cs" />
     <Compile Include="MyGame\Enemy.cs" />
+    <Compile Include="MyGame\EnemyZigzag.cs" />
     <Compile Include="MyGame\Entity.cs" />
     <Compile Include="MyGame\LineSegment.cs" />
     <Compile Include="MyGame\MyGame.cs" />
