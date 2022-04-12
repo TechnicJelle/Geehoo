@@ -23,7 +23,7 @@ public class MyGame : Game
 
 		enemies = new List<Enemy>();
 		float f = 0;
-		for (float h = 0; h > -height; h -= height / 5f)
+		for (float h = 0; h > -height/2f; h -= height/2f / 5f)
 		{
 			for (float i = 0; i < width; i += width / 3f)
 			{
@@ -33,7 +33,7 @@ public class MyGame : Game
 			}
 		}
 
-		enemies.Add(new EnemyBoss(-height, 250));
+		enemies.Add(new EnemyBoss(-height/2f, 250));
 
 		foreach (Enemy enemy in enemies)
 		{
