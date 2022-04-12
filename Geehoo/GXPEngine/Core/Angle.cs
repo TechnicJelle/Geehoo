@@ -177,21 +177,25 @@ public readonly struct Angle
 		return Math.Abs(left.GetRadians() - right.GetRadians()) > TOLERANCE;
 	}
 
+	//TODO: make this check if the right angle is counter-clockwise in regards to the left angle
 	public static bool operator <(Angle left, Angle right)
 	{
 		return left.GetRadians() < right.GetRadians();
 	}
 
+	//TODO: make this check if the right angle is clockwise in regards to the left angle
 	public static bool operator >(Angle left, Angle right)
 	{
 		return left.GetRadians() > right.GetRadians();
 	}
 
+	//TODO: Same
 	public static bool operator <=(Angle left, Angle right)
 	{
 		return left.GetRadians() <= right.GetRadians();
 	}
 
+	//TODO: Same
 	public static bool operator >= (Angle left, Angle right)
 	{
 		return left.GetRadians() >= right.GetRadians();
